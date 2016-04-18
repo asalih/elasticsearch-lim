@@ -29,3 +29,9 @@ func (h *AppHandler) RenderView(w http.ResponseWriter, view string, data interfa
 
 	templates.ExecuteTemplate(w, "layout", data)
 }
+
+func (h *AppHandler) RenderPartial(w http.ResponseWriter, view string, data interface{}) {
+	var templates = template.Must(template.ParseFiles(view))
+
+	templates.ExecuteTemplate(w, "layout", data)
+}
