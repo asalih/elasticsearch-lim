@@ -13,6 +13,8 @@ type AppHandler struct {
 
 func (h *AppHandler) RenderRoutes(r *mux.Router) {
 	r.HandleFunc("/", IndexHandler)
+	r.HandleFunc("/chart/{which}", chartHandler)
+
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("public/"))))
 }
 
@@ -33,5 +35,5 @@ func (h *AppHandler) RenderView(w http.ResponseWriter, view string, data interfa
 func (h *AppHandler) RenderPartial(w http.ResponseWriter, view string, data interface{}) {
 	var templates = template.Must(template.ParseFiles(view))
 
-	templates.ExecuteTemplate(w, "layout", data)
+	templates.Execute(w, data)
 }

@@ -20,11 +20,11 @@ func InitServer() {
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
-	p := &AnyP{Titles: "contentsdas"}
+	//p := &AnyP{Titles: "contentsdas"}
 
-	appHdlr.RenderView(w, "views/index.html", p)
+	appHdlr.RenderView(w, "views/index.html", nil)
 }
 
-type AnyP struct {
-	Titles string
+func chartHandler(w http.ResponseWriter, r *http.Request) {
+	appHdlr.RenderPartial(w, "views/_all.html", nil)
 }
