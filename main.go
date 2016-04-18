@@ -3,9 +3,9 @@ package main
 import "github.com/asalih/elasticsearch-lim/app"
 
 func main() {
-	var timeh = &TimeHandler{}
+	var timeh = app.TimeHandler{}
 	go timeh.InitTime()
 
-	InitServer()
+	app.InitServer()
 
 }
