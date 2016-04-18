@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -28,6 +27,5 @@ func (h *AppHandler) RenderView(w http.ResponseWriter, view string, data interfa
 		templates.ParseFiles(e)
 	}
 
-	fmt.Println(templates)
 	templates.ExecuteTemplate(w, "layout", data)
 }
