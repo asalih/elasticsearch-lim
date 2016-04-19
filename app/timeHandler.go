@@ -12,7 +12,7 @@ type TimeHandler struct {
 }
 
 func (t *TimeHandler) InitTime() {
-	t.ticker = time.NewTicker(time.Millisecond * 1000)
+	t.ticker = time.NewTicker(time.Second * 2)
 	if current != nil {
 		current.Stop()
 	}
@@ -20,7 +20,9 @@ func (t *TimeHandler) InitTime() {
 	current = t.ticker
 
 	func() {
+		elastic := &ElasticHandler{}
 		for t := range t.ticker.C {
+			elastic.CollectNewData()
 			fmt.Println("Tick at", t)
 		}
 	}()
