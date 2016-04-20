@@ -6,6 +6,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type Chart struct{ Title string }
+
 var appHdlr = &AppHandler{}
 
 func InitServer() {
@@ -20,11 +22,31 @@ func InitServer() {
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
-	//p := &AnyP{Titles: "contentsdas"}
-
 	appHdlr.RenderView(w, "views/index.html", nil)
 }
 
+func renderHandler(w http.ResponseWriter, r *http.Request) {
+	//c := &ChartData{}
+	which := mux.Vars(r)["which"]
+
+	if which != "" {
+		appHdlr.RenderPartial(w, "views/chart.html", nil)
+	} else {
+		appHdlr.RenderPartial(w, "views/chart.html", nil)
+	}
+
+	//appHdlr.RenderPartial(w, "views/chart.html", nil)
+}
+
 func chartHandler(w http.ResponseWriter, r *http.Request) {
-	appHdlr.RenderPartial(w, "views/_all.html", nil)
+	//c := &ChartData{}
+	which := mux.Vars(r)["which"]
+
+	if which != "" {
+		appHdlr.RenderPartial(w, "views/chart.html", nil)
+	} else {
+		appHdlr.RenderPartial(w, "views/chart.html", nil)
+	}
+
+	//appHdlr.RenderPartial(w, "views/chart.html", nil)
 }

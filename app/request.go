@@ -2,26 +2,15 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 )
 
-type ElasticHandler struct{}
+type RequestHandler struct{}
 
-func (eh *ElasticHandler) CollectNewData() {
-
-	mainGet := eh.DoGetRequest(eh.CS("/"))
-	fmt.Println(mainGet["cluster_name"])
-
-	subs := mainGet["version"]
-	sub := subs.(map[string]interface{})
-	fmt.Println(sub["number"])
-}
-
-func (eh *ElasticHandler) DoGetRequest(url string) map[string]interface{} {
+func (rq *RequestHandler) DoGetRequest(url string) map[string]interface{} {
 
 	resp, _ := http.Get(url)
 
@@ -36,7 +25,7 @@ func (eh *ElasticHandler) DoGetRequest(url string) map[string]interface{} {
 	return m
 }
 
-func (eh *ElasticHandler) DoPostRequest(url string, bodyType string, payload string) map[string]interface{} {
+func (rq *RequestHandler) DoPostRequest(url string, bodyType string, payload string) map[string]interface{} {
 	rdr := strings.NewReader(payload)
 
 	resp, _ := http.Post(url, bodyType, rdr)
@@ -53,10 +42,10 @@ func (eh *ElasticHandler) DoPostRequest(url string, bodyType string, payload str
 	return m
 }
 
-func (eh *ElasticHandler) CS(url string) string {
+func (rq *RequestHandler) CS(url string) string {
 	return os.Getenv("ELASTICSEARCH_SOURCE_URL") + url
 }
 
-func (eh *ElasticHandler) CT(url string) string {
+func (rq *RequestHandler) CT(url string) string {
 	return os.Getenv("ELASTICSEARCH_TARGET_URL") + url
 }

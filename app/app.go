@@ -14,6 +14,7 @@ type AppHandler struct {
 func (h *AppHandler) RenderRoutes(r *mux.Router) {
 	r.HandleFunc("/", IndexHandler)
 	r.HandleFunc("/chart/{which}", chartHandler)
+	r.HandleFunc("/render/{which}", renderHandler)
 
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("public/"))))
 }
