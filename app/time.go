@@ -1,7 +1,7 @@
 package app
 
 import (
-	"fmt"
+	//"fmt"
 	"time"
 )
 
@@ -12,7 +12,7 @@ type TimeHandler struct {
 }
 
 func (t *TimeHandler) InitTime() {
-	t.ticker = time.NewTicker(time.Second * 2)
+	t.ticker = time.NewTicker(time.Second * 10)
 	if current != nil {
 		current.Stop()
 	}
@@ -22,8 +22,8 @@ func (t *TimeHandler) InitTime() {
 	func() {
 		elastic := &ElasticHandler{}
 		for t := range t.ticker.C {
-			elastic.CollectNewData()
-			fmt.Println("Tick at", t)
+			elastic.CollectNewData(t)
+
 		}
 	}()
 

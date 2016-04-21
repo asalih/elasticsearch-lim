@@ -5,7 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type RequestHandler struct{}
@@ -48,4 +50,17 @@ func (rq *RequestHandler) CS(url string) string {
 
 func (rq *RequestHandler) CT(url string) string {
 	return os.Getenv("ELASTICSEARCH_TARGET_URL") + url
+}
+
+func (eh *RequestHandler) EncodeToJson(data map[string]interface{}) string {
+
+	m, _ := json.Marshal(data)
+	return string(m)
+}
+
+func (eh *RequestHandler) WriteFile(data map[string]interface{}) {
+	dFile, _ := os.Create("C:\\tests\\" + strconv.FormatInt(time.Now().Unix(), 10) + ".json")
+	dataEcd := json.NewEncoder(dFile)
+	dataEcd.Encode(data)
+	dFile.Close()
 }
