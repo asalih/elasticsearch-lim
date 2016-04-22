@@ -6,11 +6,14 @@ import (
 	"time"
 )
 
-type ElasticHandler struct{ LastReq *RequestResult }
+type ElasticHandler struct {
+	LastReq *RequestResult
+	Time    time.Time
+}
 
 type RequestResult struct{ Result map[string]interface{} }
 
-func (eh *ElasticHandler) CollectNewData(time time.Time) {
+func (eh *ElasticHandler) CollectNewData() {
 
 	req := &RequestHandler{}
 
@@ -56,16 +59,16 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 
 	object := make(map[string]interface{})
 	object["idx"] = idx
-	object["timestamp"] = time.Now().Unix()
+	object["timestamp"] = eh.Time.Unix()
 
 	for i, _ := range data {
 		hNew := data[i].(map[string]interface{})
 		hOld := lastData[i].(map[string]interface{})
 
 		for j, _ := range hNew {
-			fl, ok := eh.ToFloat(hNew[j])
+			fl, ok := hNew[j].(float64)
 			if ok {
-				flo, _ := eh.ToFloat(hOld[j])
+				flo, _ := hOld[j].(float64)
 				object[i+"."+j] = eh.Calc(fl, flo)
 			}
 		}
@@ -80,9 +83,4 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 
 func (eh *ElasticHandler) Calc(f1 float64, f2 float64) float64 {
 	return (f1 - f2) / 120
-}
-
-func (eh *ElasticHandler) ToFloat(data interface{}) (float64, bool) {
-	f, o := data.(float64)
-	return f, o
 }

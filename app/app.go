@@ -30,7 +30,10 @@ func (h *AppHandler) RenderView(w http.ResponseWriter, view string, data interfa
 		templates.ParseFiles(e)
 	}
 
-	templates.ExecuteTemplate(w, "layout", data)
+	err := templates.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (h *AppHandler) RenderPartial(w http.ResponseWriter, view string, data interface{}) {

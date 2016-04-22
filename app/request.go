@@ -44,6 +44,18 @@ func (rq *RequestHandler) DoPostRequest(url string, bodyType string, payload str
 	return m
 }
 
+func (rq *RequestHandler) DoRawPostRequest(url string, bodyType string, payload string) string {
+	rdr := strings.NewReader(payload)
+
+	resp, _ := http.Post(url, bodyType, rdr)
+
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	return string(body)
+}
+
 func (rq *RequestHandler) CS(url string) string {
 	return os.Getenv("ELASTICSEARCH_SOURCE_URL") + url
 }

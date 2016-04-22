@@ -1,12 +1,19 @@
 package app
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 )
 
-type Chart struct{ Title string }
+type Chart struct {
+	Json     string
+	Header   string
+	Selector string
+	Field    string
+}
 
 var appHdlr = &AppHandler{}
 
@@ -21,18 +28,35 @@ func InitServer() {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	c := &ChartData{}
+	//q := c.GetData(time.Now().Add(time.Hour*-2).Unix(), "_all")
+	q := c.GetLoadData(time.Now().Add(time.Hour * -2).Unix())
 
-	appHdlr.RenderView(w, "views/index.html", nil)
+	model := &Chart{}
+	model.Json = q
+
+	appHdlr.RenderView(w, "views/index.html", model)
 }
 
 func renderHandler(w http.ResponseWriter, r *http.Request) {
-	//c := &ChartData{}
-	which := mux.Vars(r)["which"]
 
-	if which != "" {
+	which := mux.Vars(r)["which"]
+	header := r.URL.Query().Get("h")
+	field := r.URL.Query().Get("f")
+
+	if which == "" {
 		appHdlr.RenderPartial(w, "views/chart.html", nil)
 	} else {
-		appHdlr.RenderPartial(w, "views/chart.html", nil)
+		c := &ChartData{}
+		q := c.GetData(time.Now().Add(time.Hour*-2).Unix(), which)
+
+		model := &Chart{}
+		model.Json = q
+		model.Selector = which
+		model.Header = header
+		model.Field = field
+
+		appHdlr.RenderPartial(w, "views/chart.html", model)
 	}
 
 	//appHdlr.RenderPartial(w, "views/chart.html", nil)

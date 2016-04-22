@@ -1,14 +1,18 @@
 $(document).ready(function(){
-  $.ajax({
-        url: "/render/_all",
+  	getChart("_all", "INDEXING REQUEST RATE", "#line_all", "indexing.index_total")
+});
+
+function getChart(id, header, selector, field){
+	$.ajax({
+        url: "/render/" + id + "?h=" + header + "&f=" + field,
         type: "get",
         async: true,
         cache: true,
         dataType: "html",
+        selector: selector,
         success: function (data) {
-            $("#line_all").html(data);
-            //charts();
-            ch()
+            $(this.selector).html(data);
+            
         },
         error: function (data) {
 
@@ -16,26 +20,22 @@ $(document).ready(function(){
         complete: function () {
         }
     });
-    
-    
-  
-});
+}
 
-
-function ch(){
+function renderChart(select, labels, data){
   
 	//myLiveChart.addData([120], "August");
-    canvas = document.getElementById('lineChart'),
+    canvas = $(select)[0],
     ctx = canvas.getContext('2d'),
     startingData = {
-      labels: [1, 2, 3, 4, 5, 6, 7],
+      labels: labels,//labels: [1, 2, 3, 4, 5, 6, 7],
       datasets: [
           {
               fillColor: "rgba(151,187,205,0.2)",
               strokeColor: "rgba(151,187,205,1)",
               pointColor: "rgba(151,187,205,1)",
               pointStrokeColor: "#fff",
-              data: [28, 48, 40, 19, 86, 27, 90]
+              data: data//data: [28, 48, 40, 19, 86, 27, 90]
           }
       ]
     };
@@ -46,4 +46,10 @@ myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
 
 
         
+}
+
+function time(t){
+    var dt = new Date(t * 1000); 
+    return dt.getHours() + ":" + dt.getMinutes() + "\n\r" + (dt.getMonth()+1) + "-" + dt.getDate()
+    
 }
