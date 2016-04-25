@@ -10,7 +10,7 @@
         dar.push(curr[{{ .Field}}]);
       }
       
-      renderChart(".ch" + {{ .Selector}}, labels, dar);
+      renderChart("[data-chart='{{ .Field}}']", labels, dar);
   } else{
     
   }
@@ -27,7 +27,7 @@
                 </div>
                 <div class="box-body">
                   <div class="chart">
-                    <canvas class="ch{{ .Selector}}" style="height:250px"></canvas>
+                    <canvas data-chart="{{ .Field}}" style="height:210px"></canvas>
                   </div>
                 </div><!-- /.box-body -->
               </div>

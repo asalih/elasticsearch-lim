@@ -1,10 +1,37 @@
 $(document).ready(function(){
-  	getChart("_all", "INDEXING REQUEST RATE", "#line_all", "indexing.index_total")
+    init();
+  	
+    
+      
+      Date.prototype.getHoursTwoDigits = function()
+        {
+            var retval = this.getHours();
+            if (retval < 10)
+            {
+                return ("0" + retval.toString());
+            }
+            else
+            {
+                return retval.toString();
+            }
+        }
+        Date.prototype.getMinutesTwoDigits = function()
+        {
+            var retval = this.getMinutes();
+            if (retval < 10)
+            {
+                return ("0" + retval.toString());
+            }
+            else
+            {
+                return retval.toString();
+            }
+        }
 });
 
-function getChart(id, header, selector, field){
+function getChart(id, header, selector, field, m){
 	$.ajax({
-        url: "/render/" + id + "?h=" + header + "&f=" + field,
+        url: "/render/" + id + "?h=" + header + "&f=" + field + "&m=" + m,
         type: "get",
         async: true,
         cache: true,
@@ -43,13 +70,27 @@ function renderChart(select, labels, data){
 // Reduce the animation steps for demo clarity.
 myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
 
-
-
-        
 }
 
 function time(t){
     var dt = new Date(t * 1000); 
-    return dt.getHours() + ":" + dt.getMinutes() + "\n\r" + (dt.getMonth()+1) + "-" + dt.getDate()
+    return dt.getHoursTwoDigits() + ":" + dt.getMinutesTwoDigits()
+    
+}
+
+function init(){
+    $(".loading").remove();
+    $.each(load.aggregations.idx_agg.buckets, function(i, e){
+        
+       $(".sidebar-menu").append('<li><a href="/dashboard/'+e.key+'"><i class="fa fa-circle-o"></i> <span>' +e.key+ '</span></a></li>')
+       
+    });
+    
+    //chart inits
+    
+    $.each($(".limCharts"), function(i, e){
+        el = $(e);
+        getChart(indices, el.attr("data-header"), "#" + el.attr("id"), el.attr("data-field"), el.attr("data-qlen"))
+    });
     
 }

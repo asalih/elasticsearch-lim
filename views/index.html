@@ -1,16 +1,36 @@
 {{ define "content" }}
-		<script> var load = JSON.parse({{ .Json }}); </script>
-        
-        <section class="content">
+<div class="content-wrapper" style="min-height: 976px;">
+		<script> var load = JSON.parse({{ .Json }}); var indices = {{ .Header}} </script>
+        <section class="content-header">
+      <h1>
+        {{ .Header }}
+        <small>charts</small>
+      </h1>
+       
+    </section>
+        <section class="scontent">
           <div class="row">
-            <div class="col-xs-12" id="line_all">
-              <!-- interactive chart -->
-               
-				
+            <div class="col-xs-12 limCharts" data-header="INDEXING REQUEST RATE" data-field="indexing.index_total" data-qlen="120" id="indexing{{ .Header}}">       
             </div>
           </div>
+          
+          <div class="row">
+            <div class="col-xs-12 limCharts" data-header="SEARCH REQUEST RATE" data-field="search.query_total" data-qlen="120" id="search{{ .Header}}">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-xs-4 limCharts" data-header="DOCUMENTS" data-field="docs.count" data-qlen="20" id="docscount{{ .Header}}">
+            </div>
+            <div class="col-xs-4 limCharts" data-header="DOCUMENTS DELETED" data-field="docs.deleted" data-qlen="20" id="docsdeleted{{ .Header}}">
+            </div>
+            <div class="col-xs-4 limCharts" data-header="SIZE" data-field="store.size_in_bytes" data-qlen="20" id="storesize{{ .Header}}">
+            </div>
+          </div>
+          
+           
 
            
         </section>
-
+</div>
 {{ end }}

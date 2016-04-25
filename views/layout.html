@@ -6,9 +6,12 @@
 		    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 		</head>
-	<body>
+	<body class="skin-blue sidebar-mini">
+		<div class="wrapper">
+		{{ template "sidebar" }}
 		{{ template "content" . }}
 		{{ template "scripts" }}
+		</div>
 	</body>
 </html>
 {{ end }}
