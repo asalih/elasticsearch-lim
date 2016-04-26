@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -21,11 +20,11 @@ func (t *TimeHandler) InitTime() {
 
 	func() {
 		elastic := &ElasticHandler{}
-		fmt.Println("ticker")
+
 		for t := range t.ticker.C {
 			elastic.Time = t
 			elastic.CollectNewData()
-			fmt.Println(t)
+
 		}
 	}()
 

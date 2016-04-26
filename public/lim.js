@@ -1,3 +1,4 @@
+var charts={};
 $(document).ready(function(){
     init();
   	
@@ -49,10 +50,49 @@ function getChart(id, header, selector, field, m){
     });
 }
 
-function renderChart(select, labels, data){
+function feedChart(id, selector, field, real){
+    $(selector).find(".loadingRow").show();
+	$.ajax({
+        url: "/feed/" + id + "?f=" + field + "&r=" + real,
+        type: "get",
+        async: true,
+        cache: true,
+        dataType: "json",
+        selector: selector,
+        success: function (data) {
+            var el = $(this.selector), c = charts[this.selector], result = JSON.parse(data.Json);
+            var real;
+            
+            
+            if(result.hits.hits.length > 0){
+                for(i = 0; i < result.hits.hits.length; i++){
+                    var curr = result.hits.hits[(result.hits.hits.length-1) - i]._source;
+                    real = curr.timestamp;
+                    
+                    c.addData([curr[data.Field]], time(curr.timestamp)); 
+                    c.removeData()
+                }
+                el.attr("data-real", real);
+                
+            }
+            
+            el.find(".loadingRow").fadeOut(500);
+        },
+        error: function (data) {
+
+        },
+        complete: function () {
+        }
+    });
+}
+
+function renderChart(select, labels, data, real){
   
 	//myLiveChart.addData([120], "August");
-    canvas = $(select)[0],
+    var el = $(select), parent = el.parents(".limCharts");
+    parent.attr("data-real", real);
+    
+    var canvas = el[0],
     ctx = canvas.getContext('2d'),
     startingData = {
       labels: labels,//labels: [1, 2, 3, 4, 5, 6, 7],
@@ -68,7 +108,7 @@ function renderChart(select, labels, data){
     };
 
 // Reduce the animation steps for demo clarity.
-myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
+charts["#"+ parent.attr("id")] = new Chart(ctx).Line(startingData, {animationSteps: 15});
 
 }
 
@@ -92,5 +132,12 @@ function init(){
         el = $(e);
         getChart(indices, el.attr("data-header"), "#" + el.attr("id"), el.attr("data-field"), el.attr("data-qlen"))
     });
+    
+    window.setInterval(function(){
+        $.each($(".limCharts"), function(i, e){
+        el = $(e);
+        feedChart(indices, "#" + el.attr("id"), el.attr("data-field"), el.attr("data-real"))
+    });
+    }, 10000)
     
 }

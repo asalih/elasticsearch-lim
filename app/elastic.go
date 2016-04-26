@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"os"
 	"time"
 )
@@ -54,7 +53,6 @@ func (eh *ElasticHandler) ProcessNewData(result *RequestResult, reqHandler *Requ
 			reqHandler.DoPostRequest(targetUrl, "text/json", reqHandler.EncodeToJson(indices))
 		}
 	}
-	fmt.Println("tick")
 }
 
 func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData map[string]interface{}, idx string) map[string]interface{} {

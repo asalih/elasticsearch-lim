@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -37,7 +36,6 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if which == "" {
 		which = "_all"
 	}
-	fmt.Println(which)
 
 	model := &Chart{}
 	model.Json = q
@@ -71,14 +69,26 @@ func renderHandler(w http.ResponseWriter, r *http.Request) {
 	//appHdlr.RenderPartial(w, "views/chart.html", nil)
 }
 
-func chartHandler(w http.ResponseWriter, r *http.Request) {
+func feedHandler(w http.ResponseWriter, r *http.Request) {
 	//c := &ChartData{}
 	which := mux.Vars(r)["which"]
 
-	if which != "" {
+	field := r.URL.Query().Get("f")
+
+	real, _ := strconv.ParseInt(r.URL.Query().Get("r"), 10, 64)
+
+	if which == "" {
 		appHdlr.RenderPartial(w, "views/chart.html", nil)
 	} else {
-		appHdlr.RenderPartial(w, "views/chart.html", nil)
+		c := &ChartData{}
+		q := c.GetData(real+1, which)
+
+		model := &Chart{}
+		model.Json = q
+		model.Selector = which
+		model.Field = field
+
+		appHdlr.Json(w, model)
 	}
 
 	//appHdlr.RenderPartial(w, "views/chart.html", nil)

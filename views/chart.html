@@ -3,14 +3,17 @@
    
    var labels = [];
 	  var dar = [];
+    var real = 0;
     if(data.hits.hits.length > 0){
       for(i = 0; i < data.hits.hits.length; i++){
         var curr = data.hits.hits[(data.hits.hits.length-1) - i]._source;
+        real = curr.timestamp;
         labels.push(time(curr.timestamp));
         dar.push(curr[{{ .Field}}]);
+        
       }
       
-      renderChart("[data-chart='{{ .Field}}']", labels, dar);
+      renderChart("[data-chart='{{ .Field}}']", labels, dar, real);
   } else{
     
   }
@@ -19,7 +22,7 @@
 
 <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title">{{ .Header}}</h3>
+                  <h3 class="box-title">{{ .Header}} <i class="fa fa-circle-o-notch fa-spin fa-xs fa-fw loadingRow" style="display:none"></i></h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
