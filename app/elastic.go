@@ -2,6 +2,7 @@ package app
 
 import (
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -87,7 +88,7 @@ func (eh *ElasticHandler) Calc(f1 float64, f2 float64, field string) float64 {
 	switch field {
 	case "count", "deleted", "size_in_bytes":
 		return f1
-
 	}
-	return (f1 - f2) / 120
+	intv, _ := strconv.ParseFloat(os.Getenv("INTERVAL_SECOND"), 10)
+	return (f1 - f2) / intv
 }

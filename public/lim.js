@@ -107,8 +107,13 @@ function renderChart(select, labels, data, real){
       ]
     };
 
-// Reduce the animation steps for demo clarity.
-charts["#"+ parent.attr("id")] = new Chart(ctx).Line(startingData, {animationSteps: 15});
+var format  = parent.attr("data-formatter");
+var options = { animationSteps: 15 };
+if(format != undefined && format != ""){
+    options.scaleLabel = "<%= ' ' + " + format +  "(value)   %>"
+}
+
+charts["#"+ parent.attr("id")] = new Chart(ctx).Line(startingData, options);
 
 }
 
@@ -140,4 +145,45 @@ function init(){
     });
     }, 10000)
     
+}
+
+
+function nFormatter(num) {
+    var digits = 3;
+  var si = [
+    { value: 1E18, symbol: "e" },
+    { value: 1E15, symbol: "p" },
+    { value: 1E12, symbol: "t" },
+    { value: 1E9,  symbol: "g" },
+    { value: 1E6,  symbol: "m" },
+    { value: 1E3,  symbol: "b" }
+  ], i;
+  for (i = 0; i < si.length; i++) {
+    if (num >= si[i].value) {
+      return (num / si[i].value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[i].symbol;
+    }
+  }
+  return num.toString();
+}
+
+function sFormatter(num) {
+    var digits = 1;
+  var si = [
+    { value: 1125899906842624, symbol: "zb" },
+    { value: 1099511627776, symbol: "tb" },
+    { value: 1073741824, symbol: "gb" },
+    { value: 1048576,  symbol: "mb" },
+    { value: 1024,  symbol: "kb" },
+    { value: 1,  symbol: "b" }
+  ], i;
+  for (i = 0; i < si.length; i++) {
+    if (num >= si[i].value) {
+      return (num / si[i].value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[i].symbol;
+    }
+  }
+  return num.toString();
+}
+
+function fnValue(num){
+    return num;
 }

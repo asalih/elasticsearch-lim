@@ -1,6 +1,8 @@
 package app
 
 import (
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -11,7 +13,8 @@ type TimeHandler struct {
 }
 
 func (t *TimeHandler) InitTime() {
-	t.ticker = time.NewTicker(time.Minute * 2)
+	intvSec, _ := strconv.Atoi(os.Getenv("INTERVAL_SECOND"))
+	t.ticker = time.NewTicker(time.Duration(intvSec) * time.Second)
 	if current != nil {
 		current.Stop()
 	}

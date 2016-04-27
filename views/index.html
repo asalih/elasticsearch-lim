@@ -10,21 +10,18 @@
     </section>
         <section class="scontent">
           <div class="row">
-            <div class="col-xs-12 limCharts" data-header="INDEXING REQUEST RATE" data-field="indexing.index_total" data-qlen="120" id="indexing{{ .Header}}">       
+            <div class="col-xs-6 limCharts" data-header="INDEXING REQUEST RATE" data-field="indexing.index_total" data-qlen="60" id="indexing{{ .Header}}" data-formatter="nFormatter">       
+            </div>
+            <div class="col-xs-6 limCharts" data-header="SEARCH REQUEST RATE" data-field="search.query_total" data-qlen="60" id="search{{ .Header}}" data-formatter="nFormatter"> 
             </div>
           </div>
           
           <div class="row">
-            <div class="col-xs-12 limCharts" data-header="SEARCH REQUEST RATE" data-field="search.query_total" data-qlen="120" id="search{{ .Header}}">
+            <div class="col-xs-4 limCharts" data-header="DOCUMENTS" data-field="docs.count" data-qlen="10" id="docscount{{ .Header}}" data-formatter="nFormatter">
             </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-xs-4 limCharts" data-header="DOCUMENTS" data-field="docs.count" data-qlen="20" id="docscount{{ .Header}}">
+            <div class="col-xs-4 limCharts" data-header="DOCUMENTS DELETED" data-field="docs.deleted" data-qlen="10" id="docsdeleted{{ .Header}}" data-formatter="nFormatter">
             </div>
-            <div class="col-xs-4 limCharts" data-header="DOCUMENTS DELETED" data-field="docs.deleted" data-qlen="20" id="docsdeleted{{ .Header}}">
-            </div>
-            <div class="col-xs-4 limCharts" data-header="SIZE" data-field="store.size_in_bytes" data-qlen="20" id="storesize{{ .Header}}">
+            <div class="col-xs-4 limCharts" data-header="SIZE" data-field="store.size_in_bytes" data-qlen="10" id="storesize{{ .Header}}" data-formatter="sFormatter">
             </div>
           </div>
           
