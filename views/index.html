@@ -1,33 +1,40 @@
 {{ define "content" }}
 <div class="content-wrapper" style="min-height: 976px;">
-		<script> var load = JSON.parse({{ .Json }}); var indices = {{ .Header}} </script>
-        <section class="content-header">
-      <h1>
-        {{ .Header }}
-        <small>charts</small>
-      </h1>
-       
+    <script> var load = JSON.parse({{ .Json }}); var indices = {{ .Header}} </script>
+    <section class="content-header">
+        <h1>
+            {{ .Header }}
+            <small>charts</small>
+        </h1>
+
     </section>
-        <section class="scontent">
-          <div class="row">
-            <div class="col-xs-6 limCharts" data-header="INDEXING REQUEST RATE" data-field="indexing.index_total" data-qlen="60" id="indexing{{ .Header}}" data-formatter="nFormatter">       
+    <section class="scontent">
+        <div class="row">
+            <div class="col-xs-6 limCharts" data-header="INDEXING REQUEST RATE" data-field="indexing.index_total" data-qlen="60" id="indexing{{ .Header}}" data-formatter="nFormatter">
             </div>
-            <div class="col-xs-6 limCharts" data-header="SEARCH REQUEST RATE" data-field="search.query_total" data-qlen="60" id="search{{ .Header}}" data-formatter="nFormatter"> 
+            <div class="col-xs-6 limCharts" data-header="SEARCH REQUEST RATE" data-field="search.query_total" data-qlen="60" id="search{{ .Header}}" data-formatter="nFormatter">
             </div>
-          </div>
-          
-          <div class="row">
+        </div>
+        <div class="row">
+            <div class="col-xs-6 limCharts" data-header="INDEXING TIME" data-field="indexing.index_time_in_millis" data-qlen="60" id="indexingt{{ .Header}}" data-formatter="tFormatter">
+            </div>
+            <div class="col-xs-6 limCharts" data-header="SEARCH TIME" data-field="search.query_time_in_millis" data-qlen="60" id="searcht{{ .Header}}" data-formatter="tFormatter">
+            </div>
+        </div>
+        <div class="row">
             <div class="col-xs-4 limCharts" data-header="DOCUMENTS" data-field="docs.count" data-qlen="10" id="docscount{{ .Header}}" data-formatter="nFormatter">
             </div>
             <div class="col-xs-4 limCharts" data-header="DOCUMENTS DELETED" data-field="docs.deleted" data-qlen="10" id="docsdeleted{{ .Header}}" data-formatter="nFormatter">
             </div>
             <div class="col-xs-4 limCharts" data-header="SIZE" data-field="store.size_in_bytes" data-qlen="10" id="storesize{{ .Header}}" data-formatter="sFormatter">
             </div>
-          </div>
-          
-           
-
-           
-        </section>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 limCharts" data-header="OPEN CONTEXTS" data-field="search.open_contexts" data-qlen="10" id="opencontexts{{ .Header}}" data-formatter="nFormatter">
+            </div>
+             
+        </div>
+         
+    </section>
 </div>
 {{ end }}

@@ -86,7 +86,7 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 
 func (eh *ElasticHandler) Calc(f1 float64, f2 float64, field string) float64 {
 	switch field {
-	case "count", "deleted", "size_in_bytes":
+	case "count", "deleted", "size_in_bytes", "delete_total", "total", "open_contexts":
 		return f1
 	}
 	intv, _ := strconv.ParseFloat(os.Getenv("INTERVAL_SECOND"), 10)

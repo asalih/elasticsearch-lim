@@ -1,36 +1,37 @@
-<script> (function(){
-	var data = JSON.parse({{ .Json}});
-   
-   var labels = [];
-	  var dar = [];
-    var real = 0;
-    if(data.hits.hits.length > 0){
-      for(i = 0; i < data.hits.hits.length; i++){
-        var curr = data.hits.hits[(data.hits.hits.length-1) - i]._source;
-        real = curr.timestamp;
-        labels.push(time(curr.timestamp));
-        dar.push(curr[{{ .Field}}]);
-        
-      }
-      
-      renderChart("[data-chart='{{ .Field}}']", labels, dar, real);
-  } else{
-    
-  }
-  
-})()</script>
+<script>
+ (function(){
+     var data = JSON.parse({{ .Json}});
+
+     var labels = [];
+     var dar = [];
+     var real = 0;
+     if(data.hits.hits.length > 0){
+         for(i = 0; i < data.hits.hits.length; i++){
+             var curr = data.hits.hits[(data.hits.hits.length-1) - i]._source;
+             real = curr.timestamp;
+             labels.push(time(curr.timestamp));
+             dar.push(curr[{{ .Field}}]);
+
+         }
+
+         renderChart("[data-chart='{{ .Field}}']", labels, dar, real);
+     } else{
+
+     }
+
+ })()</script>
 
 <div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{ .Header}} <i class="fa fa-circle-o-notch fa-spin fa-xs fa-fw loadingRow" style="display:none"></i></h3>
-                  <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    
-                  </div>
-                </div>
-                <div class="box-body">
-                  <div class="chart">
-                    <canvas data-chart="{{ .Field}}" style="height:210px"></canvas>
-                  </div>
-                </div><!-- /.box-body -->
-              </div>
+    <div class="box-header with-border">
+        <h3 class="box-title">{{ .Header}} <small>{{ .Field}}</small> <i class="fa fa-circle-o-notch fa-spin fa-xs fa-fw loadingRow" style="display:none"></i></h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="chart">
+            <canvas data-chart="{{ .Field}}" style="height:210px"></canvas>
+        </div>
+    </div><!-- /.box-body -->
+</div>
