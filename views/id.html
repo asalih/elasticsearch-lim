@@ -1,0 +1,16 @@
+{{ define "p" }}
+<div class="row">
+            <div class="col-xs-6 limCharts" data-header="INDEXING REQUEST RATE" data-field="indexing.index_total" data-qlen="60" id="indexing{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            <div class="col-xs-6 limCharts" data-header="INDEXING TIME" data-field="indexing.index_time_in_millis" data-qlen="60" id="indexingt{{ .Header}}" data-formatter="tFormatter">
+            </div>
+        </div>
+<div class="row">
+            <div class="col-xs-4 limCharts" data-header="DOCUMENTS" data-field="docs.count" data-qlen="10" id="docscount{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            <div class="col-xs-4 limCharts" data-header="DOCUMENTS DELETED" data-field="docs.deleted" data-qlen="10" id="docsdeleted{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            <div class="col-xs-4 limCharts" data-header="SIZE" data-field="store.size_in_bytes" data-qlen="10" id="storesize{{ .Header}}" data-formatter="sFormatter">
+            </div>
+        </div>
+{{ end }}

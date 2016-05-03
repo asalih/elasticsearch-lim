@@ -148,9 +148,9 @@ function nFormatter(num) {
       { value: 1E18, symbol: "e" },
       { value: 1E15, symbol: "p" },
       { value: 1E12, symbol: "t" },
-      { value: 1E9, symbol: "g" },
-      { value: 1E6, symbol: "m" },
-      { value: 1E3, symbol: "b" }
+      { value: 1E9, symbol: "b" },
+      { value: 1E6, symbol: "M" },
+      { value: 1E3, symbol: "k" }
     ], i;
     for (i = 0; i < si.length; i++) {
         if (num >= si[i].value) {

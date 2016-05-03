@@ -1,0 +1,25 @@
+{{ define "p" }}
+        <div class="row">
+            <div class="col-xs-6 limCharts" data-header="SEARCH REQUEST RATE" data-field="search.query_total" data-qlen="60" id="search{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            <div class="col-xs-6 limCharts" data-header="SEARCH TIME" data-field="search.query_time_in_millis" data-qlen="60" id="searcht{{ .Header}}" data-formatter="tFormatter">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 limCharts" data-header="GET RATE" data-field="get.total" data-qlen="60" id="get{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            <div class="col-xs-6 limCharts" data-header="GET TIME" data-field="get.time_in_millis" data-qlen="60" id="gett{{ .Header}}" data-formatter="tFormatter">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 limCharts" data-header="FETCH RATE" data-field="search.fetch_total" data-qlen="60" id="fetch{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            <div class="col-xs-6 limCharts" data-header="FETCH TIME" data-field="search.fetch_time_in_millis" data-qlen="60" id="fetcht{{ .Header}}" data-formatter="tFormatter">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 limCharts" data-header="OPEN CONTEXTS" data-field="search.open_contexts" data-qlen="10" id="opencontexts{{ .Header}}" data-formatter="nFormatter">
+            </div>
+             
+        </div>
+{{ end }}

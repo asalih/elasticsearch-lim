@@ -23,7 +23,10 @@ func InitServer() {
 	appHdlr.RenderRoutes(r)
 	appHdlr.LoadTemplates("views/layout.html", "views/scripts.html", "views/sidebar.html")
 
-	http.ListenAndServe(":9091", r)
+	err := http.ListenAndServe(":9091", r)
+	if err != nil {
+		panic(err)
+	}
 
 }
 
@@ -33,15 +36,21 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	q := c.GetLoadData(time.Now().Add(time.Hour * -2).Unix())
 
 	which := mux.Vars(r)["which"]
+	pred := r.URL.Query().Get("p")
+
 	if which == "" {
 		which = "_all"
+	}
+	if pred == "" {
+		pred = "sg"
 	}
 
 	model := &Chart{}
 	model.Json = q
 	model.Header = which
+	model.Field = pred
 
-	appHdlr.RenderView(w, "views/index.html", model)
+	appHdlr.RenderView(w, model, "views/index.html", "views/"+pred+".html")
 }
 
 func renderHandler(w http.ResponseWriter, r *http.Request) {

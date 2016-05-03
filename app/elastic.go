@@ -70,8 +70,8 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 			fl, ok := hNew[j].(float64)
 			if ok {
 				flo, _ := hOld[j].(float64)
-
-				object[i+"."+j] = eh.Calc(fl, flo, j)
+				field := i + "." + j
+				object[field] = eh.Calc(fl, flo, field)
 
 			}
 		}
@@ -86,7 +86,7 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 
 func (eh *ElasticHandler) Calc(f1 float64, f2 float64, field string) float64 {
 	switch field {
-	case "count", "deleted", "size_in_bytes", "delete_total", "total", "open_contexts":
+	case "docs.count", "docs.deleted", "store.size_in_bytes", "indexing.delete_total", "search.open_contexts":
 		return f1
 	}
 	intv, _ := strconv.ParseFloat(os.Getenv("INTERVAL_SECOND"), 10)

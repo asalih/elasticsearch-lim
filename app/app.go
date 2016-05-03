@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -26,8 +27,19 @@ func (h *AppHandler) LoadTemplates(fn ...string) {
 	h.fns = fn
 }
 
-func (h *AppHandler) RenderView(w http.ResponseWriter, view string, data interface{}) {
-	var templates = template.Must(template.ParseFiles(view))
+func (h *AppHandler) RenderView(w http.ResponseWriter, data interface{}, views ...string) {
+	//templates := &template.Template{}
+
+	/*fmt.Println(len(views))
+	 */
+
+	var templates = template.New("templ")
+	//var templates = template.Must(template.ParseFiles(view))
+
+	for _, e := range views {
+		fmt.Println(e)
+		templates.ParseFiles(e)
+	}
 
 	for _, e := range h.fns {
 		templates.ParseFiles(e)
