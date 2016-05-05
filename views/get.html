@@ -1,0 +1,11 @@
+{{ define "p" }}
+<div class="row">
+            <div class="col-xs-12 limCharts" data-header="GET RATE" data-env="ST" data-field="get.total" data-qlen="60" id="get{{ .Header}}" data-formatter="nFormatter">
+            </div>
+            
+        </div>
+<div class="row">
+<div class="col-xs-12 limCharts" data-header="GET TIME" data-env="ST" data-field="get.time_in_millis" data-qlen="60" id="gett{{ .Header}}" data-formatter="tFormatter">
+            </div>
+</div>
+		{{ end }}

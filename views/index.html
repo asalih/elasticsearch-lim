@@ -5,18 +5,7 @@
         <h1>
             {{ .Header }}
             <small>charts</small>
-            <a class="btn btn-app" href="/dashboard/{{ .Header }}?p=sg">
-                <i class="fa  fa-circle-o"></i> Search & Get
-            </a>
-            <a class="btn btn-app" href="/dashboard/{{ .Header }}?p=id">
-                <i class="fa  fa-circle-o"></i> Index & Delete
-            </a>
-            <a class="btn btn-app" href="/dashboard/{{ .Header }}?p=jvm">
-                <i class="fa  fa-circle-o"></i> JVM
-            </a>
-            <a class="btn btn-app" href="/dashboard/{{ .Header }}?p=sys">
-                <i class="fa  fa-circle-o"></i> System
-            </a>
+            {{ template "buttons" }}
         </h1>
         
     </section>

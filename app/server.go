@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+
 	"strconv"
 	"time"
 
@@ -18,6 +19,10 @@ type Chart struct {
 var appHdlr = &AppHandler{}
 
 func InitServer() {
+
+	elastic := &ElasticHandler{}
+	elastic.CheckMappings()
+
 	r := mux.NewRouter()
 
 	appHdlr.RenderRoutes(r)
@@ -36,13 +41,20 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	q := c.GetLoadData(time.Now().Add(time.Hour * -2).Unix())
 
 	which := mux.Vars(r)["which"]
+	env := mux.Vars(r)["env"]
+
 	pred := r.URL.Query().Get("p")
 
 	if which == "" {
 		which = "_all"
 	}
 	if pred == "" {
-		pred = "sg"
+
+		if env == "st" {
+			pred = "search"
+		} else {
+			pred = "jvm"
+		}
 	}
 
 	model := &Chart{}
@@ -50,7 +62,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	model.Header = which
 	model.Field = pred
 
-	appHdlr.RenderView(w, model, "views/index.html", "views/"+pred+".html")
+	appHdlr.RenderView(w, model, "views/index.html", "views/"+pred+".html", "views/"+env+".html")
 }
 
 func renderHandler(w http.ResponseWriter, r *http.Request) {
@@ -59,12 +71,13 @@ func renderHandler(w http.ResponseWriter, r *http.Request) {
 	header := r.URL.Query().Get("h")
 	field := r.URL.Query().Get("f")
 	minute, _ := strconv.Atoi(r.URL.Query().Get("m"))
+	env := r.URL.Query().Get("env")
 
 	if which == "" {
 		appHdlr.RenderPartial(w, "views/chart.html", nil)
 	} else {
 		c := &ChartData{}
-		q := c.GetData(time.Now().Add((time.Duration(minute)*time.Minute)*-1).Unix(), which)
+		q := c.GetData(time.Now().Add((time.Duration(minute)*time.Minute)*-1).Unix(), which, env)
 
 		model := &Chart{}
 		model.Json = q
@@ -81,6 +94,7 @@ func renderHandler(w http.ResponseWriter, r *http.Request) {
 func feedHandler(w http.ResponseWriter, r *http.Request) {
 	//c := &ChartData{}
 	which := mux.Vars(r)["which"]
+	env := r.URL.Query().Get("env")
 
 	field := r.URL.Query().Get("f")
 
@@ -90,7 +104,7 @@ func feedHandler(w http.ResponseWriter, r *http.Request) {
 		appHdlr.RenderPartial(w, "views/chart.html", nil)
 	} else {
 		c := &ChartData{}
-		q := c.GetData(real+1, which)
+		q := c.GetData(real+1, which, env)
 
 		model := &Chart{}
 		model.Json = q

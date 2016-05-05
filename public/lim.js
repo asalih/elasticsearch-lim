@@ -24,9 +24,9 @@ $(document).ready(function () {
     }
 });
 
-function getChart(id, header, selector, field, m) {
+function getChart(id, header, selector, field, m, env) {
     $.ajax({
-        url: "/render/" + id + "?h=" + header + "&f=" + field + "&m=" + m,
+        url: "/render/" + id + "?h=" + header + "&f=" + field + "&m=" + m + "&env=" + env,
         type: "get",
         async: true,
         cache: true,
@@ -44,10 +44,10 @@ function getChart(id, header, selector, field, m) {
     });
 }
 
-function feedChart(id, selector, field, real) {
+function feedChart(id, selector, field, real, env) {
     $(selector).find(".loadingRow").show();
     $.ajax({
-        url: "/feed/" + id + "?f=" + field + "&r=" + real,
+        url: "/feed/" + id + "?f=" + field + "&r=" + real + "&env=" + env,
         type: "get",
         async: true,
         cache: true,
@@ -119,23 +119,32 @@ function time(t) {
 
 function init() {
     $(".loading").remove();
-    $.each(load.aggregations.idx_agg.buckets, function (i, e) {
 
-        $(".sidebar-menu").append('<li><a href="/dashboard/' + e.key + '"><i class="fa fa-circle-o"></i> <span>' + e.key + '</span></a></li>')
+    $(".sidebar-menu").append('<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>Index Statistics</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu index-stats"></ul></li>')
+    $.each(load.s.aggregations.idx_agg.buckets, function (i, e) {
+
+        $(".index-stats").append('<li><a href="/dashboard/st/' + e.key + '"><i class="fa fa-circle-o"></i> <span>' + e.key + '</span></a></li>')
 
     });
 
-    //chart inits
+    $(".sidebar-menu").append('<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>Node Statistics</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu node-stats"></ul></li>')
+    $.each(load.n.aggregations.idx_agg.buckets, function (i, e) {
 
+        $(".node-stats").append('<li><a href="/dashboard/nd/' + e.key + '"><i class="fa fa-circle-o"></i> <span>' + e.key + '</span></a></li>')
+
+    });
+
+
+    //chart inits
     $.each($(".limCharts"), function (i, e) {
         el = $(e);
-        getChart(indices, el.attr("data-header"), "#" + el.attr("id"), el.attr("data-field"), el.attr("data-qlen"))
+        getChart(indices, el.attr("data-header"), "#" + el.attr("id"), el.attr("data-field"), el.attr("data-qlen"), el.attr("data-env"))
     });
 
     window.setInterval(function () {
         $.each($(".limCharts"), function (i, e) {
             el = $(e);
-            feedChart(indices, "#" + el.attr("id"), el.attr("data-field"), el.attr("data-real"))
+            feedChart(indices, "#" + el.attr("id"), el.attr("data-field"), el.attr("data-real"), el.attr("data-env"))
         });
     }, 10000)
 
@@ -207,3 +216,5 @@ function fnValue(num) {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+function pFormatter(x) { return x + "%"; }

@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -15,7 +14,7 @@ type AppHandler struct {
 
 func (h *AppHandler) RenderRoutes(r *mux.Router) {
 	r.HandleFunc("/", IndexHandler)
-	r.HandleFunc("/dashboard/{which}", IndexHandler)
+	r.HandleFunc("/dashboard/{env}/{which}", IndexHandler)
 
 	r.HandleFunc("/feed/{which}", feedHandler)
 	r.HandleFunc("/render/{which}", renderHandler)
@@ -37,7 +36,7 @@ func (h *AppHandler) RenderView(w http.ResponseWriter, data interface{}, views .
 	//var templates = template.Must(template.ParseFiles(view))
 
 	for _, e := range views {
-		fmt.Println(e)
+
 		templates.ParseFiles(e)
 	}
 

@@ -62,3 +62,10 @@ func (q *QueryTemplates) GetIndicesTemplate(unix int64) string {
 }
 `, unix)
 }
+
+func (q *QueryTemplates) GetTargetMappingTemplate(ttl string) string {
+	return fmt.Sprintf(`{
+   "_ttl" : { "enabled" : true, "default" : "%s" }
+}
+`, ttl)
+}
