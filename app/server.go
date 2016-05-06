@@ -47,6 +47,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if which == "" {
 		which = "_all"
+		env = "st"
 	}
 	if pred == "" {
 

@@ -1,0 +1,17 @@
+{{ define "p" }}
+<div class="row">
+    <div class="col-xs-12 limCharts" data-header="MERGE" data-env="ST" data-field="merges.total" data-qlen="60" id="merge{{ .Header}}" data-formatter="nFormatter">
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-xs-12 limCharts" data-header="MERGE TIME" data-env="ST" data-field="merges.total_time_in_millis" data-qlen="60" id="merget{{ .Header}}" data-formatter="tFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="MERGE SIZE" data-env="ST" data-field="merges.total_size_in_bytes" data-qlen="60" id="suggest{{ .Header}}" data-formatter="sFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="MERGED DOCS" data-env="ST" data-field="merges.total_docs" data-qlen="60" id="suggestt{{ .Header}}" data-formatter="nFormatter">
+    </div>
+</div>
+{{ end }}

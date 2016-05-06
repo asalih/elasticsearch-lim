@@ -2,7 +2,7 @@ var charts = {};
 $(document).ready(function () {
     init();
 
-
+    $(document).ready(function () { $(nodeSelector).addClass("menu-open").css("display", "block") });
 
     Date.prototype.getHoursTwoDigits = function () {
         var retval = this.getHours();
@@ -57,14 +57,14 @@ function feedChart(id, selector, field, real, env) {
             var el = $(this.selector), c = charts[this.selector], result = JSON.parse(data.Json);
             var real;
 
-
             if (result.hits.hits.length > 0) {
                 for (i = 0; i < result.hits.hits.length; i++) {
                     var curr = result.hits.hits[(result.hits.hits.length - 1) - i]._source;
                     real = curr.timestamp;
 
-                    c.addData([curr[data.Field]], time(curr.timestamp));
                     c.removeData()
+                    c.addData([curr[data.Field]], time(curr.timestamp));
+                    
                 }
                 el.attr("data-real", real);
 

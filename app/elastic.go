@@ -115,24 +115,10 @@ func (eh *ElasticHandler) ProcessNodesData(result *RequestResult, reqHandler *Re
 
 			fCurr := forData[i].(map[string]interface{})
 
-			jvmLastData := ld.(map[string]interface{})["jvm"].(map[string]interface{})
-			jvmData := fCurr["jvm"].(map[string]interface{})
-
-			osLastData := ld.(map[string]interface{})["os"].(map[string]interface{})
-			osData := fCurr["os"].(map[string]interface{})
-
-			httpLastData := ld.(map[string]interface{})["http"].(map[string]interface{})
-			httpData := fCurr["http"].(map[string]interface{})
-
 			nodes := make(map[string]interface{})
 
 			name := fCurr["name"].(string)
-			eh.DoCalculations(jvmData, jvmLastData, name, nodes, "jvm")
-			eh.DoCalculations(osData, osLastData, name, nodes, "os")
-			eh.DoCalculations(httpData, httpLastData, name, nodes, "http")
-
-			nodes["node_id"] = i
-			nodes["transport_address"] = fCurr["transport_address"].(string)
+			eh.DoCalculations(fCurr, ld.(map[string]interface{}), name, nodes, "")
 
 			reqHandler.DoPostRequest(result.NodesTargetUrl, "text/json", reqHandler.EncodeToJson(nodes))
 
@@ -140,27 +126,36 @@ func (eh *ElasticHandler) ProcessNodesData(result *RequestResult, reqHandler *Re
 	}
 }
 
+//Data is the last http result, lastData is for comparison
 func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData map[string]interface{}, idx string, object map[string]interface{}, initial string) {
 
 	object["idx"] = idx
 	object["timestamp"] = eh.Time.Unix()
 
 	for i, _ := range data {
+
 		hNew, ok := data[i].(map[string]interface{})
 		hOld, _ := lastData[i].(map[string]interface{})
 		if ok {
 			for j, _ := range hNew {
+				field := ""
+				if initial != "" {
+					field = initial + "." + i + "." + j
+				} else {
+					field = i + "." + j
+				}
+
 				fl, ok := hNew[j].(float64)
 				if ok {
 					flo, _ := hOld[j].(float64)
-					field := ""
-					if initial != "" {
-						field = initial + "." + i + "." + j
-					} else {
-						field = i + "." + j
-					}
-					object[field] = eh.Calc(fl, flo, field)
 
+					object[field] = eh.Calc(fl, flo, field)
+				} else {
+					sub, oks := hNew[j].(map[string]interface{})
+					if oks {
+
+						eh.DoCalculations(sub, hOld[j].(map[string]interface{}), idx, object, field)
+					}
 				}
 			}
 		} else {
@@ -170,18 +165,25 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 			} else {
 				field = i
 			}
-			object[field] = eh.Calc(data[i].(float64), lastData[i].(float64), field)
+			_, isFl := data[i].(float64)
+			if isFl {
+				object[field] = eh.Calc(data[i].(float64), lastData[i].(float64), field)
+			} else {
+				_, isStr := data[i].(string)
+				if isStr {
+					object[field] = data[i].(string)
+				}
+			}
 		}
-
 	}
-
 }
 
 func (eh *ElasticHandler) Calc(f1 float64, f2 float64, field string) float64 {
 	switch field {
 	case "docs.count", "docs.deleted", "store.size_in_bytes", "indexing.delete_total", "search.open_contexts", "http.current_open", "os.timestamp",
 		"jvm.mem.heap_used_in_bytes", "jvm.mem.heap_used_percent", "os.cpu_percent", "os.load_average", "os.mem.total_in_bytes", "os.mem.used_percent",
-		"os.mem.free_percent":
+		"os.mem.free_percent", "jvm.mem.non_heap_used_in_bytes", "jvm.timestamp", "gc.collectors.old.collection_count",
+		"gc.collectors.young.collection_count", "os.mem.used_in_bytes", "transport.server_open":
 		return f1
 	}
 	intv, _ := strconv.ParseFloat(os.Getenv("INTERVAL_SECOND"), 10)

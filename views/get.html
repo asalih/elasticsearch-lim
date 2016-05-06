@@ -1,11 +1,17 @@
 {{ define "p" }}
 <div class="row">
-            <div class="col-xs-12 limCharts" data-header="GET RATE" data-env="ST" data-field="get.total" data-qlen="60" id="get{{ .Header}}" data-formatter="nFormatter">
-            </div>
-            
-        </div>
-<div class="row">
-<div class="col-xs-12 limCharts" data-header="GET TIME" data-env="ST" data-field="get.time_in_millis" data-qlen="60" id="gett{{ .Header}}" data-formatter="tFormatter">
-            </div>
+    <div class="col-xs-12 limCharts" data-header="GET RATE" data-env="ST" data-field="get.total" data-qlen="60" id="get{{ .Header}}" data-formatter="nFormatter">
+    </div>
+
 </div>
-		{{ end }}
+<div class="row">
+    <div class="col-xs-12 limCharts" data-header="GET TIME" data-env="ST" data-field="get.time_in_millis" data-qlen="60" id="gett{{ .Header}}" data-formatter="tFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="SUGGEST" data-env="ST" data-field="suggest.total" data-qlen="60" id="suggest{{ .Header}}" data-formatter="nFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="SUGGEST TIME" data-env="ST" data-field="suggest.time_in_millis" data-qlen="60" id="suggestt{{ .Header}}" data-formatter="tFormatter">
+    </div>
+</div>
+{{ end }}

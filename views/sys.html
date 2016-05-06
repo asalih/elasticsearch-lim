@@ -1,3 +1,16 @@
 {{ define "p" }}
-sys
+<div class="row">
+    <div class="col-xs-12 limCharts" data-header="CPU USAGE" data-field="os.cpu_percent" data-qlen="60" data-env="ND" id="oscpu{{ .Header}}" data-formatter="pFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 limCharts" data-header="LOAD AVERAGE" data-field="os.load_average" data-qlen="60" data-env="ND" id="loadavg{{ .Header}}" data-formatter="pFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="MEMORY USED PER" data-field="os.mem.used_percent" data-qlen="10" data-env="ND" id="memusedp{{ .Header}}" data-formatter="pFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="MEMORY USAGE" data-field="os.mem.used_in_bytes" data-qlen="10" data-env="ND" id="memusedb{{ .Header}}" data-formatter="sFormatter">
+    </div>
+</div>
 {{ end }}

@@ -1,7 +1,24 @@
 {{ define "p" }}
 <div class="row">
-           
-            <div class="col-xs-4 limCharts" data-header="SIZE" data-field="jvm.mem.heap_used_percent" data-qlen="10" data-env="ND" id="jvmheapper{{ .Header}}" data-formatter="pFormatter">
-            </div>
-        </div>
+    <div class="col-xs-12 limCharts" data-header="JVM HEAP USED PER" data-field="jvm.mem.heap_used_percent" data-qlen="60" data-env="ND" id="jvmheapper{{ .Header}}" data-formatter="pFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="JVM HEAP USED" data-field="jvm.mem.heap_used_in_bytes" data-qlen="30" data-env="ND" id="jvmheap{{ .Header}}" data-formatter="sFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="JVM NON-HEAP USED" data-field="jvm.mem.non_heap_used_in_bytes" data-qlen="30" data-env="ND" id="jvmnonheap{{ .Header}}" data-formatter="sFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="GC COLLECTIONS (OLD)" data-field="jvm.gc.collectors.old.collection_count" data-qlen="30" data-env="ND" id="gcold{{ .Header}}" data-formatter="nFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="GC COLLECTION TIME (OLD)" data-field="jvm.gc.collectors.old.collection_time_in_millis" data-qlen="30" data-env="ND" id="gcoldt{{ .Header}}" data-formatter="tFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="GC COLLECTIONS (YOUNG)" data-field="jvm.gc.collectors.young.collection_count" data-qlen="30" data-env="ND" id="gcyoung{{ .Header}}" data-formatter="nFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="GC COLLECTION TIME (YOUNG)" data-field="jvm.gc.collectors.young.collection_time_in_millis" data-qlen="30" data-env="ND" id="gcyoungt{{ .Header}}" data-formatter="tFormatter">
+    </div>
+</div>
 {{ end }}

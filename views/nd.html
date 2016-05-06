@@ -1,9 +1,14 @@
 {{ define "buttons" }}
+<script>var nodeSelector = ".node-stats";</script>
 <a class="btn btn-app" href="{{ .Header }}?p=jvm">
-                <i class="fa  fa-circle-o"></i> JVM
-            </a>
-            <a class="btn btn-app" href="{{ .Header }}?p=sys">
-                <i class="fa  fa-circle-o"></i> System
-            </a>
-			
-			{{ end }}
+    <i class="fa  fa-circle-o"></i> JVM
+</a>
+<a class="btn btn-app" href="{{ .Header }}?p=sys">
+    <i class="fa  fa-circle-o"></i> System
+</a>
+<a class="btn btn-app" href="{{ .Header }}?p=network">
+    <i class="fa  fa-circle-o"></i> Network
+</a>
+
+{{ end }}
+

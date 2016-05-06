@@ -1,0 +1,14 @@
+{{ define "p" }}
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="TRANSPORT CONNECTIONS" data-env="ND" data-field="transport.server_open" data-qlen="60" id="transport{{ .Header}}" data-formatter="nFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="CLIENT CONNECTIONS" data-env="ND" data-field="http.current_open" data-qlen="60" id="httpconnect{{ .Header}}" data-formatter="nFormatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6 limCharts" data-header="TRANSMIT" data-env="ND" data-field="transport.tx_size_in_bytes" data-qlen="60" id="transmit{{ .Header}}" data-formatter="nFormatter">
+    </div>
+    <div class="col-xs-6 limCharts" data-header="RECEIVE" data-env="ND" data-field="transport.rx_size_in_bytes" data-qlen="60" id="receive{{ .Header}}" data-formatter="nFormatter">
+    </div>
+</div>
+{{ end }}
