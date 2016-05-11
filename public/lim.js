@@ -2,7 +2,7 @@ var charts = {};
 $(document).ready(function () {
     init();
 
-    $(document).ready(function () { $(nodeSelector).addClass("menu-open").css("display", "block") });
+    $(nodeSelector).addClass("menu-open").css("display", "block");
 
     Date.prototype.getHoursTwoDigits = function () {
         var retval = this.getHours();
@@ -22,6 +22,8 @@ $(document).ready(function () {
             return retval.toString();
         }
     }
+
+    
 });
 
 function getChart(id, header, selector, field, m, env) {
@@ -34,12 +36,9 @@ function getChart(id, header, selector, field, m, env) {
         selector: selector,
         success: function (data) {
             $(this.selector).html(data);
-
         },
-        error: function (data) {
-
-        },
-        complete: function () {
+        error: function (err) {
+            console.log(err)
         }
     });
 }
@@ -72,10 +71,8 @@ function feedChart(id, selector, field, real, env) {
 
             el.find(".loadingRow").fadeOut(500);
         },
-        error: function (data) {
-
-        },
-        complete: function () {
+        error: function (err) {
+            console.log(err)
         }
     });
 }
@@ -108,12 +105,6 @@ function renderChart(select, labels, data, real) {
     }
 
     charts["#" + parent.attr("id")] = new Chart(ctx).Line(startingData, options);
-
-}
-
-function time(t) {
-    var dt = new Date(t * 1000);
-    return dt.getHoursTwoDigits() + ":" + dt.getMinutesTwoDigits()
 
 }
 
@@ -150,6 +141,10 @@ function init() {
 
 }
 
+function time(t) {
+    var dt = new Date(t * 1000);
+    return dt.getHoursTwoDigits() + ":" + dt.getMinutesTwoDigits()
+}
 
 function nFormatter(num) {
     var digits = 3;

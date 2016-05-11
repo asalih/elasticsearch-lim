@@ -21,15 +21,12 @@ func (t *TimeHandler) InitTime() {
 
 	current = t.ticker
 
-	func() {
-		elastic := &ElasticHandler{}
+	elastic := &ElasticHandler{}
 
-		for t := range t.ticker.C {
-			elastic.Time = t
-			elastic.CollectNewData()
-
-		}
-	}()
+	for t := range t.ticker.C {
+		elastic.Time = t
+		elastic.CollectNewData()
+	}
 
 }
 
