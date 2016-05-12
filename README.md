@@ -10,7 +10,7 @@ lim logs node stats and index stats separately. You can see your index stats(sea
 
 # Installation
 
-Download and build with go. When you build successfuly, just edit ".env" file and run.
+Download and build with go. When you build successfully, just edit ".env" file and run.
 
 - ELASTICSEARCH_SOURCE_URL = Gets the index stats node stats from this url
 - ELASTICSEARCH_TARGET_URL = Posts the calculated url here. It uses the other elasticsearch server to keep data, like marvel.
