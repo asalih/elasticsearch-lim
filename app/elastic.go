@@ -13,8 +13,6 @@ type ElasticHandler struct {
 	Time    time.Time
 }
 
-var nonCalculationFields = []string{""}
-
 type RequestResult struct {
 	StatsResult    map[string]interface{}
 	StatsTargetUrl string
@@ -22,6 +20,7 @@ type RequestResult struct {
 	NodesTargetUrl string
 }
 
+//mapping checker, if mapping doesn't exists, posts new one for 'ttl' properties.
 func (eh *ElasticHandler) CheckMappings() {
 	req := &RequestHandler{}
 
@@ -50,6 +49,7 @@ func (eh *ElasticHandler) CheckMappings() {
 	}
 }
 
+//collects index stats and node stats.
 func (eh *ElasticHandler) CollectNewData() {
 
 	req := &RequestHandler{}
@@ -69,12 +69,12 @@ func (eh *ElasticHandler) CollectNewData() {
 
 }
 
+//processes collected new index stats data
 func (eh *ElasticHandler) ProcessStatsData(result *RequestResult, reqHandler *RequestHandler) {
 
 	if eh.LastReq == nil {
 		eh.LastReq = result
 	}
-	//targetUrl := reqHandler.CT(os.Getenv("ELASTICSEARCH_INDEX_ST"))
 
 	lastData := eh.LastReq.StatsResult["_all"].(map[string]interface{})["total"].(map[string]interface{})
 	data := result.StatsResult["_all"].(map[string]interface{})["total"].(map[string]interface{})
@@ -100,12 +100,13 @@ func (eh *ElasticHandler) ProcessStatsData(result *RequestResult, reqHandler *Re
 	}
 }
 
+//processes collected new nodes stats data
 func (eh *ElasticHandler) ProcessNodesData(result *RequestResult, reqHandler *RequestHandler) {
 
 	if eh.LastReq == nil {
 		eh.LastReq = result
 	}
-	//targetUrl := reqHandler.CT(os.Getenv("ELASTICSEARCH_INDEX_ST"))
+
 	forLastData := eh.LastReq.NodesResult["nodes"].(map[string]interface{})
 	forData := result.NodesResult["nodes"].(map[string]interface{})
 
@@ -165,19 +166,20 @@ func (eh *ElasticHandler) DoCalculations(data map[string]interface{}, lastData m
 			} else {
 				field = i
 			}
-			_, isFl := data[i].(float64)
+			df1, isFl := data[i].(float64)
 			if isFl {
-				object[field] = eh.Calc(data[i].(float64), lastData[i].(float64), field)
+				object[field] = eh.Calc(df1, lastData[i].(float64), field)
 			} else {
-				_, isStr := data[i].(string)
+				ds1, isStr := data[i].(string)
 				if isStr {
-					object[field] = data[i].(string)
+					object[field] = ds1
 				}
 			}
 		}
 	}
 }
 
+//takes the diffrence given two(f1,f2) values and divides interval seconds(lookup the .env file). accept some fields, lookup switch-case closure.
 func (eh *ElasticHandler) Calc(f1 float64, f2 float64, field string) float64 {
 	switch field {
 	case "docs.count", "docs.deleted", "store.size_in_bytes", "indexing.delete_total", "search.open_contexts", "http.current_open", "os.timestamp",
