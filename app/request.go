@@ -5,9 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
-	"time"
 )
 
 type RequestHandler struct{}
