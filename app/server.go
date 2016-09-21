@@ -1,10 +1,13 @@
 package app
 
 import (
+	"log"
 	"net/http"
 
 	"strconv"
 	"time"
+
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -21,14 +24,15 @@ var appHdlr = &AppHandler{}
 func InitServer() {
 
 	elastic := &ElasticHandler{}
-	elastic.CheckMappings()
+	go elastic.CheckMappings()
 
 	r := mux.NewRouter()
 
 	appHdlr.RenderRoutes(r)
 	appHdlr.LoadTemplates("views/layout.html", "views/scripts.html", "views/sidebar.html")
 
-	err := http.ListenAndServe(":9091", r)
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), r)
+	log.Println(err)
 	if err != nil {
 		panic(err)
 	}
@@ -36,9 +40,10 @@ func InitServer() {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+
 	c := &ChartData{}
 	//q := c.GetData(time.Now().Add(time.Hour*-2).Unix(), "_all")
-	q := c.GetLoadData(time.Now().Add(time.Hour * -2).Unix())
+	q, err := c.GetLoadData(time.Now().Add(time.Hour * -2).Unix())
 
 	which := mux.Vars(r)["which"]
 	env := mux.Vars(r)["env"]
@@ -57,7 +62,9 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 			pred = "jvm"
 		}
 	}
-
+	if err != nil {
+		q = "{\"error\": \"occured\"}"
+	}
 	model := &Chart{}
 	model.Json = q
 	model.Header = which

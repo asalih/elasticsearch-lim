@@ -11,19 +11,21 @@ import (
 type RequestHandler struct{}
 
 //get request, returns body as json
-func (rq *RequestHandler) DoGetRequest(url string) map[string]interface{} {
+func (rq *RequestHandler) DoGetRequest(url string) (m map[string]interface{}, err error) {
 
-	resp, _ := http.Get(url)
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return nil, err
+	}
 
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	m := make(map[string]interface{})
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		panic(err)
-	}
-	return m
+	m = make(map[string]interface{})
+	err = json.Unmarshal(body, &m)
+
+	return m, err
 }
 
 //post request, returns body as json
@@ -45,16 +47,19 @@ func (rq *RequestHandler) DoPostRequest(url string, bodyType string, payload str
 }
 
 //raw post request, returns body as string
-func (rq *RequestHandler) DoRawPostRequest(url string, bodyType string, payload string) string {
+func (rq *RequestHandler) DoRawPostRequest(url string, bodyType string, payload string) (b string, err error) {
 	rdr := strings.NewReader(payload)
 
-	resp, _ := http.Post(url, bodyType, rdr)
+	resp, err := http.Post(url, bodyType, rdr)
+	if err != nil {
+		return "", err
+	}
 
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 
-	return string(body)
+	return string(body), err
 }
 
 //reads 'source' url from .env file and appends the given path

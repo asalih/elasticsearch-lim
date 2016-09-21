@@ -25,7 +25,12 @@ func (eh *ElasticHandler) CheckMappings() {
 	req := &RequestHandler{}
 
 	mapUrl := req.CT(os.Getenv("ELASTICSEARCH_INDEX_ST") + "_mapping")
-	result := req.DoGetRequest(mapUrl)
+	result, err := req.DoGetRequest(mapUrl)
+
+	if err != nil {
+		return
+	}
+
 	status := result["status"]
 
 	if len(result) == 0 || (status != nil && status.(float64) == 404) {
@@ -37,7 +42,7 @@ func (eh *ElasticHandler) CheckMappings() {
 	}
 
 	mapUrl = req.CT(os.Getenv("ELASTICSEARCH_INDEX_ND") + "_mapping")
-	result = req.DoGetRequest(mapUrl)
+	result, err = req.DoGetRequest(mapUrl)
 	status = result["status"]
 
 	if len(result) == 0 || (status != nil && status.(float64) == 404) {
@@ -54,12 +59,15 @@ func (eh *ElasticHandler) CollectNewData() {
 
 	req := &RequestHandler{}
 
-	statsGet := req.DoGetRequest(req.CS("/_stats"))
+	statsGet, err := req.DoGetRequest(req.CS("/_stats"))
+	if err != nil {
+		return
+	}
 	result := &RequestResult{StatsResult: statsGet, StatsTargetUrl: req.CT(os.Getenv("ELASTICSEARCH_INDEX_ST"))}
 
 	eh.ProcessStatsData(result, req)
 
-	nodesGet := req.DoGetRequest(req.CS("/_nodes/stats"))
+	nodesGet, err := req.DoGetRequest(req.CS("/_nodes/stats"))
 	result.NodesResult = nodesGet
 	result.NodesTargetUrl = req.CT(os.Getenv("ELASTICSEARCH_INDEX_ND"))
 

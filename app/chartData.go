@@ -13,21 +13,30 @@ func (c *ChartData) GetData(unixT int64, idx string, env string) string {
 	qs := qt.GetCurrentQueryTemplate(unixT, idx)
 
 	req := &RequestHandler{}
-	result := req.DoRawPostRequest(req.CT(os.Getenv("ELASTICSEARCH_INDEX_"+env)+"_search"), "text/json", qs)
+	result, _ := req.DoRawPostRequest(req.CT(os.Getenv("ELASTICSEARCH_INDEX_"+env)+"_search"), "text/json", qs)
 
 	return result
 
 }
 
-func (c *ChartData) GetLoadData(unixT int64) string {
+func (c *ChartData) GetLoadData(unixT int64) (json string, err error) {
 	qt := &q.QueryTemplates{}
 	qs := qt.GetIndicesTemplate(unixT)
 
 	req := &RequestHandler{}
-	result := req.DoRawPostRequest(req.CT(os.Getenv("ELASTICSEARCH_INDEX_ST")+"_search"), "text/json", qs)
-	resultN := req.DoRawPostRequest(req.CT(os.Getenv("ELASTICSEARCH_INDEX_ND")+"_search"), "text/json", qs)
+	result, errR := req.DoRawPostRequest(req.CT(os.Getenv("ELASTICSEARCH_INDEX_ST")+"_search"), "text/json", qs)
+	resultN, errN := req.DoRawPostRequest(req.CT(os.Getenv("ELASTICSEARCH_INDEX_ND")+"_search"), "text/json", qs)
 
-	return "{\"s\": " + result + ", \"n\": " + resultN + "}"
+	if errR != nil {
+		err = errR
+	} else if errN != nil {
+		err = errN
+	}
+
+	json = "{\"s\": " + result + ", \"n\": " + resultN + "}"
+
+	return json, err
+
 	//	return result
 
 }

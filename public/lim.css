@@ -6,3 +6,9 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.logo-danger{
+    color: #a94442 !important;
+    background-color: #f2dede !important;
+    border-color: #ebccd1 !important;
+}

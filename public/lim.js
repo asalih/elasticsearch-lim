@@ -111,6 +111,12 @@ function renderChart(select, labels, data, real) {
 function init() {
     $(".loading").remove();
 
+    if (load.error) {
+        $(".logo").addClass("logo-danger");
+        $("#err").append("<h2 style='color:#a94442;'>Check your source elasticsearch url!</h2>");
+        return;
+    }
+
     $(".sidebar-menu").append('<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>Index Statistics</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu index-stats"></ul></li>')
     $.each(load.s.aggregations.idx_agg.buckets, function (i, e) {
 
