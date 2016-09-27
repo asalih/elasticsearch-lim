@@ -1,4 +1,4 @@
-# lim as an alternative for monitoring elasticsearch
+# lim as an alternative for monitoring elasticsearch [![Build Status](https://travis-ci.org/asalih/elasticsearch-lim.svg?branch=master)](https://travis-ci.org/asalih/elasticsearch-lim)
 
 lim logs node stats and index stats separately. You can see your index stats(search, log, fetch, etc.) within all nodes and keeps calculated datas.
 
