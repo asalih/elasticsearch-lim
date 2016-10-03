@@ -60,8 +60,8 @@ function feedChart(id, selector, field, real, env) {
                 for (i = 0; i < result.hits.hits.length; i++) {
                     var curr = result.hits.hits[(result.hits.hits.length - 1) - i]._source;
                     real = curr.timestamp;
-
-                    c.removeData()
+						c.removeData();
+					}
                     c.addData([curr[data.Field]], time(curr.timestamp));
                     
                 }
