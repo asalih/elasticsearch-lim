@@ -60,6 +60,7 @@ function feedChart(id, selector, field, real, env) {
                 for (i = 0; i < result.hits.hits.length; i++) {
                     var curr = result.hits.hits[(result.hits.hits.length - 1) - i]._source;
                     real = curr.timestamp;
+					if(c.datasets[0].points && c.datasets[0].points.length > 7){
 						c.removeData();
 					}
                     c.addData([curr[data.Field]], time(curr.timestamp));
