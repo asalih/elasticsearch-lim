@@ -1,4 +1,6 @@
-# lim as an alternative for monitoring elasticsearch [![Build Status](https://travis-ci.org/asalih/elasticsearch-lim.svg?branch=master)](https://travis-ci.org/asalih/elasticsearch-lim)
+# lim as an alternative for monitoring elasticsearch 
+
+[![Build Status](https://travis-ci.org/asalih/elasticsearch-lim.svg?branch=master)](https://travis-ci.org/asalih/elasticsearch-lim)
 
 lim logs node stats and index stats separately. You can see your index stats(search, log, fetch, etc.) within all nodes and keeps calculated datas.
 
@@ -12,8 +14,8 @@ lim logs node stats and index stats separately. You can see your index stats(sea
 
 Download and build with go. When you build successfully, just edit ".env" file and run.
 
-- ELASTICSEARCH_SOURCE_URL = Gets the index stats node stats from this url
-- ELASTICSEARCH_TARGET_URL = Posts the calculated url here. It uses the other elasticsearch server to keep data, like marvel.
+- ELASTICSEARCH_SOURCE_URL = Gets the index stats and node stats from this url.
+- ELASTICSEARCH_TARGET_URL = Posts the calculated data to this url. It uses the an other elasticsearch server to keep data, like marvel.
 - ELASTICSEARCH_INDEX_ST = Index address for keeping "index" stats.
 - ELASTICSEARCH_INDEX_ND = Index address for keeping "node" stats.
 - ELASTICSEARCH_TTL = Time to live stored index and node stats.
